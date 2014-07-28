@@ -16,14 +16,25 @@ catch(e) {
 	alert("Sorry, your browser doesn't support the magic of getUserMedia \n try the latest firefox or chrome");
 }
 
+
+
 // set up vars and audio nodes
 var vCanvasDim    = {width:window.innerWidth,height:window.innerHeight},
-	freqBinNumber = Math.pow(2,9),
+	freqBinNumber = Math.pow(2,10),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	gainNode      = context.createGain(),
 	filter        = context.createBiquadFilter();
+	window.audioBuffer = new Float32Array(analyser.frequencyBinCount);
+	tData = new Float32Array(analyser.frequencyBinCount);
 
+var hScale = d3.scale.linear()
+	.range([0,vCanvasDim.height])
+	.domain([-30,-150])
+
+var colorScale = d3.scale.linear()
+	.range([255,0])
+	.domain([-30,-110])
 
 svg = d3.select("#a").append("svg:svg")
 	.attr("width", window.innerWidth)
@@ -34,12 +45,11 @@ svg = d3.select("#a").append("svg:svg")
     analyser.fftSize = freqBinNumber;
 var	freqBinWidth     = (vCanvasDim.width*2+1)/freqBinNumber,
 	buffer           = new Float32Array(analyser.frequencyBinCount);
-	analyser.smoothingTimeConstant = .85
-
+	analyser.smoothingTimeConstant = .1
 // oscillator settings
 	oscillator.type = 'sine'
-	oscillator.frequency.value = 00;
-	oscillator.start(0);
+	oscillator.frequency.value = 10000;
+	// oscillator.start(0);
 
 // filter settings
 	filter.type = 0; // Low-pass filter. See BiquadFilterNode docs
@@ -52,6 +62,7 @@ function analyze()
 {
 	requestAnimationFrame(analyze);
 	analyser.getFloatFrequencyData(buffer);
+	window.oldAudioBuffer = window.audioBuffer
 	window.audioBuffer = buffer
 	showData()
 }
@@ -62,7 +73,7 @@ function connectStream(stream)
 	source.connect(gainNode);
 	// filter.connect(gainNode); 
 	gainNode.connect(analyser);
-	analyser.connect(context.destination);
+	// analyser.connect(context.destination);
 	analyze();
 }
 
@@ -73,12 +84,11 @@ function microphoneError(e) {
 d3.select("body").style('height',window.innerHeight+'px').on("mousemove", function()
 {
 	var m = d3.mouse(this)
-		oscillator.frequency.value = Math.log(m[0])*300;
+		oscillator.frequency.value = Math.log(1/m[0])*100;
 		gainNode.gain.value = 1-m[1]/vCanvasDim.height;	
+		gainNode.gain.value = .2
 });
 
-function showData()
-{
 		svg.selectAll("line").remove()
 		svg.selectAll("line")
 			.data(window.audioBuffer)
@@ -86,10 +96,19 @@ function showData()
 			.append("line")
 			// .attr('class','gridLine')
 			.attr("y1",function(d,i){return(window.innerHeight)})
-			.attr("y2",function(d,i){return(-1*window.audioBuffer[i])*3})
+			.attr("y2",function(d,i){return(hScale(-30))})
 			.attr("x1",function(d,i){return((i+.5)*freqBinWidth)})
 			.attr("x2",function(d,i){return((i+.5)*freqBinWidth)})
-			.attr("stroke-width",Math.ceil(freqBinWidth)+1)
-			.attr("stroke",function(d,i){return('rgb('+ Math.floor(255-d*-2)+',0,0)')});
+			.attr("stroke-width",Math.ceil(freqBinWidth)+.5)
+			.attr("stroke",function(d,i){return('rgb(0,'+ Math.floor(255-d*-2)+','+ Math.floor(255-d*-2)+')')});
 
+function showData()
+{
+		svg.selectAll("line")
+			.data(window.audioBuffer)
+			.transition()
+			.ease("linear")
+			.duration(10)
+			.attr("y2",function(d){return(hScale(d))})
+			.attr("stroke",function(d){return('rgb(0,'+ Math.floor(colorScale(d))/1.3+','+ Math.floor(colorScale(d))+')')});
 }

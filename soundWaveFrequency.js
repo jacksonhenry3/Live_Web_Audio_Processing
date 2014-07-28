@@ -24,7 +24,14 @@ var vCanvasDim    = {width:window.innerWidth,height:window.innerHeight},
 	gainNode      = context.createGain(),
 	filter        = context.createBiquadFilter();
 
+var hScale = d3.scale.linear()
+	.range([0,vCanvasDim.height])
+	.domain([-30,-110])
 
+var colorScale = d3.scale.linear()
+	.range([255,0])
+	.domain([-30,-110])
+	
 svg = d3.select("#a").append("svg:svg")
 	.attr("width", window.innerWidth)
 	.attr("height",  window.innerHeight)
@@ -77,8 +84,6 @@ d3.select("body").style('height',window.innerHeight+'px').on("mousemove", functi
 		gainNode.gain.value = 1-m[1]/vCanvasDim.height;	
 });
 
-function showData()
-{
 		svg.selectAll("line").remove()
 		svg.selectAll("line")
 			.data(window.audioBuffer)
@@ -86,10 +91,20 @@ function showData()
 			.append("line")
 			// .attr('class','gridLine')
 			.attr("y1",function(d,i){return(window.innerHeight)})
-			.attr("y2",function(d,i){return(-1*window.audioBuffer[i])*3})
+			.attr("y2",function(d,i){return(hScale(-30))})
 			.attr("x1",function(d,i){return((i+.5)*freqBinWidth)})
 			.attr("x2",function(d,i){return((i+.5)*freqBinWidth)})
-			.attr("stroke-width",Math.ceil(freqBinWidth)+1)
-			.attr("stroke",function(d,i){return('rgb('+ Math.floor(255-d*-2)+',0,0)')});
+			.attr("stroke-width",Math.ceil(freqBinWidth)+.5)
+			.attr("stroke",function(d,i){return('rgb(0,'+ Math.floor(255-d*-2)+','+ Math.floor(255-d*-2)+')')});
 
+
+function showData()
+{
+		svg.selectAll("line")
+			.data(window.audioBuffer)
+			.transition()
+			.ease("linear")
+			.duration(10)
+			.attr("y2",function(d){return(hScale(d))})
+			.attr("stroke",function(d){return('rgb(0,'+ Math.floor(colorScale(d))/1.3+','+ Math.floor(colorScale(d))+')')});
 }

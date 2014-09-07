@@ -188,7 +188,7 @@ document.getElementById('plop').appendChild(audio1);
   source.connect(filter);
   var source1 = context.createMediaElementSource(audio1);
   source1.connect(filter);
-  // analyser.connect(context.destination);
+  analyser.connect(context.destination);
 
   // ...call requestAnimationFrame() and render the analyser's output to canvas.
 }

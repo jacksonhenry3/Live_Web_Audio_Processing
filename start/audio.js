@@ -95,7 +95,7 @@ function connectStream(stream)
 }
 	filter.connect(gainNode); 
 	gainNode.connect(analyser);
-	// analyser.connect(context.destination);
+	analyser.connect(context.destination);
 
 function microphoneError(e) {
 	alert('MicrophoneError error!', e);

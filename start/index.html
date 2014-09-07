@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <title>core-drawer-panel</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <script src="components/platform/platform.js"></script>
+      <link rel="import" href = "components/paper-shadow/paper-shadow.html">
+    <link rel="import" href="components/core-toolbar/core-toolbar.html">
+    <link rel="import" href="components/core-icon-button/core-icon-button.html">
+    <link rel="import" href="components/core-drawer-panel/core-drawer-panel.html">
+    <link rel="import" href = "components/font-roboto/roboto.html">
+      <link rel="import" href="components/paper-radio-group/paper-radio-group.html">
+   <link rel="import"href="components/core-input/core-input.html" >
+   <link rel="import"href="components/paper-slider/paper-slider.html" >
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="d3.js" charset="utf-8"></script>
+  </head>
+  
+  <body unresolved touch-action="auto">
+  
+    <core-drawer-panel rightDrawer responsiveWidth = '1200px'>
+    
+      <div drawer id = 'plop'>
+
+        <paper-shadow z="1"></paper-shadow>
+            <h1> settings</h1>
+            <br>
+            Volume
+            <br>
+<paper-slider id = 'volume'  oninput="console.log(this.value)" pin value="50"></paper-slider>
+
+            <div class = 'card'>
+              <paper-shadow z="1"></paper-shadow>
+              <h2> Filter </h2>
+              Filter type
+                  <paper-radio-group selected="0" id = 'filtertype'>
+                  <paper-radio-button label="Low "></paper-radio-button>
+                  <paper-radio-button id = 'highpass' label="High "></paper-radio-button>
+                  <paper-radio-button label="Band "></paper-radio-button>
+                </paper-radio-group>
+            Filter Frequency
+            <paper-slider id = 'filterFreq' pin value="500" max = "5000"></paper-slider>
+            Filter Quality
+            <paper-slider id = 'filterQ' pin value="0" max = "100"></paper-slider>
+
+          </div>
+                      <div class = 'card'>
+              <paper-shadow z="1"></paper-shadow>
+              <h2> analyser </h2>
+            Frequency bins
+            <paper-slider id = 'filterFreq' pin value="500" max = "2500"></paper-slider>
+            time smoothing
+            <paper-slider id = 'filterFreq' pin value="500" max = "2500"></paper-slider>
+
+          </div>
+
+      </div>
+        
+      <div main>
+          
+              <core-toolbar class="dark-theme">
+              
+
+                <h1 fir bottom flex style = 'text-align:center'>Exploring Sound</h1>
+                <core-icon-button icon="menu" onclick="document.querySelector('core-drawer-panel').togglePanel();"></core-icon-button>
+              </core-toolbar>
+              <div id = 'plotContainer'>
+              <div class = 'plot' id = 'timeDomainPlot'>
+              <paper-shadow z="1"></paper-shadow></div>
+              <div class = 'plot' id = 'freqDomainPlot'>
+              <paper-shadow z="1"></paper-shadow></div>
+              </div>
+      </div>
+
+
+      
+    </core-drawer-panel>
+    
+  </body>
+  <script type="text/javascript" src = 'audio.js'></script>
+</html>

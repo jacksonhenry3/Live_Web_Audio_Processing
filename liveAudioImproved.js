@@ -30,7 +30,7 @@ var vCanvasDim    = {width:window.innerWidth,height:window.innerHeight},
 
 var hScale = d3.scale.linear()
 	.range([0,vCanvasDim.height])
-	.domain([-30,-150])
+	.domain([30,-150])
 
 var colorScale = d3.scale.linear()
 	.range([255,0])
@@ -45,7 +45,7 @@ svg = d3.select("#a").append("svg:svg")
     analyser.fftSize = freqBinNumber;
 var	freqBinWidth     = (vCanvasDim.width*2+1)/freqBinNumber,
 	buffer           = new Float32Array(analyser.frequencyBinCount);
-	analyser.smoothingTimeConstant = .1
+	analyser.smoothingTimeConstant = .7
 // oscillator settings
 	oscillator.type = 'sine'
 	oscillator.frequency.value = 10000;

@@ -31,7 +31,7 @@ b = document.getElementById('freqDomainPlot')
 // set up vars and audio nodes
 var freqVCanvasDim    = {width:a.offsetWidth,height:a.offsetHeight},
     timeVCanvasDim    = {width:b.offsetWidth,height:b.offsetHeight},
-	freqBinNumber = Math.pow(2,11),
+	freqBinNumber = Math.pow(2,5),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	gainNode      = context.createGain(),
@@ -50,6 +50,8 @@ var hFreqScale = d3.scale.linear()
 var colorScale = d3.scale.linear()
 	.range([1,0])
 	.domain([-30,-100])
+
+
 
 freqSVG = d3.select("#freqDomainPlot").append("svg:svg")
 	.attr("width",freqVCanvasDim.width)
@@ -74,7 +76,7 @@ var	freqBinWidth     = (freqVCanvasDim.width*2+1)/freqBinNumber;
 
 // filter settings
 	filter.type = 1; // Low-pass filter. See BiquadFilterNode docs
-	filter.frequency.value = 500; // Set cutoff to 440 HZ
+	filter.frequency.value = 500000; // Set cutoff to 440 HZ
 
 // create oscillator audio graph
 	oscillator.connect(filter);
@@ -90,9 +92,10 @@ function analyze()
 function connectStream(stream)
 {
 	var source = context.createMediaStreamSource(stream);
-	source.connect(filter);
+	// source.connect(filter);
 	analyze();
 }
+analyze();
 	filter.connect(gainNode); 
 	gainNode.connect(analyser);
 	analyser.connect(context.destination);

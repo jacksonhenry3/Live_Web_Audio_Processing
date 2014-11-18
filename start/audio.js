@@ -92,7 +92,7 @@ function analyze()
 function connectStream(stream)
 {
 	var source = context.createMediaStreamSource(stream);
-	source.connect(filter);
+	// source.connect(filter);
 	analyze();
 }
 analyze();

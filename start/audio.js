@@ -31,7 +31,7 @@ b = document.getElementById('freqDomainPlot')
 // set up vars and audio nodes
 var freqVCanvasDim    = {width:a.offsetWidth,height:a.offsetHeight},
     timeVCanvasDim    = {width:b.offsetWidth,height:b.offsetHeight},
-	freqBinNumber = Math.pow(2,5),
+	freqBinNumber = Math.pow(2,11),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	gainNode      = context.createGain(),
@@ -92,7 +92,7 @@ function analyze()
 function connectStream(stream)
 {
 	var source = context.createMediaStreamSource(stream);
-	// source.connect(filter);
+	source.connect(filter);
 	analyze();
 }
 analyze();
@@ -173,7 +173,7 @@ filter.frequency.value  =filterFreq.immediateValue
 var audio = new Audio();
 var audio1 = new Audio();
 audio.src = 'http://www.amclassical.com/mp3/amclassical_piano_sonata_k_310_mvt_1.mp3';
-audio1.src = 'CalculusStudent.mp3';
+audio1.src = 'http://www.amclassical.com/mp3/amclassical_beethoven_fur_elise.mp3';
 audio.controls = true;
 audio.autoplay = false;
 audio1.controls = true;

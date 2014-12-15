@@ -23,7 +23,7 @@ catch(e) {
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
 	freqPlot      = document.getElementById('freqDomainPlot'),
-	freqBinNumber = Math.pow(2,7),
+	freqBinNumber = Math.pow(2,11),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	freqBuffer    = new Float32Array(freqBinNumber),
@@ -37,7 +37,7 @@ var timePlot   	  = document.getElementById('timeDomainPlot'),
 
 // analyser settings
 analyser.fftSize = freqBinNumber;
-analyser.smoothingTimeConstant = .8;
+analyser.smoothingTimeConstant = .6;
 // analyser.connect(context.destination)
 
 function connectStream(stream)
@@ -65,7 +65,7 @@ function getCanvasSizes(){
 function getScales () {
 	hFreqScale = d3.scale.linear()
 			.range([0,freqCanvasDim.height])
-			.domain([analyser.minDecibels*1.01,analyser.maxDecibels])
+			.domain([analyser.minDecibels*1.01,analyser.maxDecibels+10])
 
 	colorScale = d3.scale.linear()
 			.range([1,0])
@@ -133,10 +133,9 @@ timectx.fillStyle = 'rgb(0, 0, 0)';
 	var barHeight;
 	var x = 0;
 
-	freqctx.fillStyle = 'rgba(0,188,212,1)';
 	for(var i = 0; i < freqBinNumber; i++) {
 	    barHeight = hFreqScale(freqBuffer[i])
-	    
+	    freqctx.fillStyle = 'rgba(0,188,212,'+barHeight/freqCanvasDim.height+')';
 	    freqctx.fillRect(x,freqCanvasDim.height-barHeight,freqBinWidth*2.5+1,barHeight);
 	    x += freqBinWidth*2.5 ;
 	  }
@@ -144,9 +143,9 @@ timectx.fillStyle = 'rgb(0, 0, 0)';
 	  x = 0;
 	  timectx.fillStyle = 'rgba(0,188,212,1)';
 	for(var i = 0; i < freqBinNumber; i++) {
-	    barHeight = timeBuffer[i]
+	    barHeight = timeBuffer[i]+timeCanvasDim.height/3
 	    
-	    timectx.fillRect(x,freqCanvasDim.height-analyser.minDecibels-barHeight,freqBinWidth*2.5+1,barHeight);
+	    timectx.fillRect(x,timeCanvasDim.height-barHeight,timeBinWidth*2.5+1,barHeight);
 	    x += freqBinWidth*2.5 ;
 	  }
 	};
@@ -162,21 +161,21 @@ function analyze()
 
 // analyze()
 
-// var audio = new Audio();
-// var audio1 = new Audio();
-// audio.src = "a.mp3";
-// audio1.src = 'b.mp3';
-// audio.controls = true;
-// audio.playbackRate = 1
-// audio.autoplay = true;
-// audio1.controls = true;
-// audio1.autoplay = false;
-// document.getElementById('plop').appendChild(audio);
-// document.getElementById('plop').appendChild(audio1);
+var audio = new Audio();
+var audio1 = new Audio();
+audio.src = "a.mp3";
+audio1.src = 'b.mp3';
+audio.controls = true;
+audio.playbackRate = 1
+audio.autoplay = false;
+audio1.controls = true;
+audio1.autoplay = false;
+document.getElementById('plop').appendChild(audio);
+document.getElementById('plop').appendChild(audio1);
 
-// var source = context.createMediaElementSource(audio);
-//   source.connect(analyser);
-//   var source1 = context.createMediaElementSource(audio1);
-//   source1.connect(analyser);
+var source = context.createMediaElementSource(audio);
+  source.connect(analyser);
+  var source1 = context.createMediaElementSource(audio1);
+  source1.connect(analyser);
 }
 

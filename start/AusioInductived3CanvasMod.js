@@ -11,7 +11,14 @@ catch(e) {
 	alert("Sorry, your browser doesn't support the magic of web audio \n try the latest firefox or chrome");
 }
 
-
+// set up for audio input
+try {
+	navigator.getUserMedia = navigator.webkitGetUserMedia
+	navigator.webkitGetUserMedia({audio: true, video: false}, connectStream, microphoneError);
+}
+catch(e) {
+	alert("Sorry, your browser doesn't support the magic of getUserMedia \n try the latest firefox or chrome");
+}
 
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
@@ -31,7 +38,20 @@ var timePlot   	  = document.getElementById('timeDomainPlot'),
 // analyser settings
 analyser.fftSize = freqBinNumber;
 analyser.smoothingTimeConstant = .8;
-analyser.connect(context.destination)
+// analyser.connect(context.destination)
+
+function connectStream(stream)
+{
+	var source = context.createMediaStreamSource(stream);
+	source.connect(analyser);
+	analyze();
+}
+
+function microphoneError(e) {
+	alert('MicrophoneError error!', e);
+};
+
+
 function getBinWidth () {
 	freqBinWidth     = (freqCanvasDim.width)/freqBinNumber;
 	timeBinWidth     = (timeCanvasDim.width)/freqBinNumber;
@@ -45,7 +65,7 @@ function getCanvasSizes(){
 function getScales () {
 	hFreqScale = d3.scale.linear()
 			.range([0,freqCanvasDim.height])
-			.domain([-15,-110])
+			.domain([analyser.minDecibels*1.01,analyser.maxDecibels])
 
 	colorScale = d3.scale.linear()
 			.range([1,0])
@@ -84,8 +104,8 @@ var freqctx = freqCanvas[0][0].getContext("2d"),
 
 oscillator.type = 'square'
 oscillator.frequency.value = 200;
-// oscillator.start(0);
-oscillator.connect(analyser);
+oscillator.start(0);
+// oscillator.connect(analyser);
 
 d3.select("#freqDomainPlot").on("mousemove", function()
 {
@@ -105,15 +125,28 @@ function drawCanvas() {
 	freqctx.fillStyle = 'rgb(0, 0, 0)';
 	freqCanvas.attr("width",freqCanvasDim.width)
 
+
+timectx.fillStyle = 'rgb(0, 0, 0)';
+	timeCanvas.attr("width",freqCanvasDim.width)
+
 	var barWidth = (freqCanvasDim.width / freqBinNumber) * 2.5;
 	var barHeight;
 	var x = 0;
 
-
+	freqctx.fillStyle = 'rgba(0,188,212,1)';
 	for(var i = 0; i < freqBinNumber; i++) {
-	    barHeight = (freqBuffer[i] + freqCanvasDim.height)*2;
-	    freqctx.fillStyle = 'rgb(' + Math.floor(barHeight+100) + ',50,50)';
-	    freqctx.fillRect(x,freqCanvasDim.height-barHeight/2,freqBinWidth*2.5+1,barHeight/2);
+	    barHeight = hFreqScale(freqBuffer[i])
+	    
+	    freqctx.fillRect(x,freqCanvasDim.height-analyser.minDecibels-barHeight,freqBinWidth*2.5+1,barHeight);
+	    x += freqBinWidth*2.5 ;
+	  }
+	  x = 0;
+	  timectx.fillStyle = 'rgba(0,188,212,1)';
+	for(var i = 0; i < freqBinNumber; i++) {
+		// console.log(i)
+	    barHeight = timeBuffer[i]+200
+	    
+	    timectx.fillRect(x,freqCanvasDim.height-analyser.minDecibels-barHeight,freqBinWidth*2.5+1,barHeight);
 	    x += freqBinWidth*2.5 ;
 	  }
 	};
@@ -131,10 +164,11 @@ analyze()
 
 var audio = new Audio();
 var audio1 = new Audio();
-audio.src = "http://www.podtrac.com/pts/redirect.mp3/audio.wnyc.org/radiolab_podcast/radiolab_podcast14outsidewestgate.mp3";
-audio1.src = 'http://freemusicarchive.org/music/download/39f6174edc92e4d4a0a8795b7c8fa7edcc9723fe';
+audio.src = "a.mp3";
+audio1.src = 'b.mp3';
 audio.controls = true;
-audio.autoplay = false;
+audio.playbackRate = 1
+audio.autoplay = true;
 audio1.controls = true;
 audio1.autoplay = false;
 document.getElementById('plop').appendChild(audio);

@@ -23,7 +23,7 @@ catch(e) {
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
 	freqPlot      = document.getElementById('freqDomainPlot'),
-	freqBinNumber = Math.pow(2,5),
+	freqBinNumber = Math.pow(2,7),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	freqBuffer    = new Float32Array(freqBinNumber),
@@ -137,9 +137,10 @@ timectx.fillStyle = 'rgb(0, 0, 0)';
 	for(var i = 0; i < freqBinNumber; i++) {
 	    barHeight = hFreqScale(freqBuffer[i])
 	    
-	    freqctx.fillRect(x,freqCanvasDim.height-analyser.minDecibels-barHeight,freqBinWidth*2.5+1,barHeight);
+	    freqctx.fillRect(x,freqCanvasDim.height-barHeight,freqBinWidth*2.5+1,barHeight);
 	    x += freqBinWidth*2.5 ;
 	  }
+
 	  x = 0;
 	  timectx.fillStyle = 'rgba(0,188,212,1)';
 	for(var i = 0; i < freqBinNumber; i++) {
@@ -159,23 +160,23 @@ function analyze()
 	requestAnimationFrame(analyze);
 }
 
-analyze()
+// analyze()
 
-var audio = new Audio();
-var audio1 = new Audio();
-audio.src = "a.mp3";
-audio1.src = 'b.mp3';
-audio.controls = true;
-audio.playbackRate = 1
-audio.autoplay = true;
-audio1.controls = true;
-audio1.autoplay = false;
-document.getElementById('plop').appendChild(audio);
-document.getElementById('plop').appendChild(audio1);
+// var audio = new Audio();
+// var audio1 = new Audio();
+// audio.src = "a.mp3";
+// audio1.src = 'b.mp3';
+// audio.controls = true;
+// audio.playbackRate = 1
+// audio.autoplay = true;
+// audio1.controls = true;
+// audio1.autoplay = false;
+// document.getElementById('plop').appendChild(audio);
+// document.getElementById('plop').appendChild(audio1);
 
-var source = context.createMediaElementSource(audio);
-  source.connect(analyser);
-  var source1 = context.createMediaElementSource(audio1);
-  source1.connect(analyser);
+// var source = context.createMediaElementSource(audio);
+//   source.connect(analyser);
+//   var source1 = context.createMediaElementSource(audio1);
+//   source1.connect(analyser);
 }
 

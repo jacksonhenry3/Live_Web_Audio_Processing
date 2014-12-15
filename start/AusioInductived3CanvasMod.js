@@ -23,7 +23,7 @@ catch(e) {
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
 	freqPlot      = document.getElementById('freqDomainPlot'),
-	freqBinNumber = Math.pow(2,11),
+	freqBinNumber = Math.pow(2,8),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	freqBuffer    = new Float32Array(freqBinNumber),

@@ -23,7 +23,7 @@ catch(e) {
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
 	freqPlot      = document.getElementById('freqDomainPlot'),
-	freqBinNumber = Math.pow(2,11),
+	freqBinNumber = Math.pow(2,9),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	freqBuffer    = new Float32Array(freqBinNumber),
@@ -143,8 +143,7 @@ timectx.fillStyle = 'rgb(0, 0, 0)';
 	  x = 0;
 	  timectx.fillStyle = 'rgba(0,188,212,1)';
 	for(var i = 0; i < freqBinNumber; i++) {
-		// console.log(i)
-	    barHeight = timeBuffer[i]+200
+	    barHeight = timeBuffer[i]
 	    
 	    timectx.fillRect(x,freqCanvasDim.height-analyser.minDecibels-barHeight,freqBinWidth*2.5+1,barHeight);
 	    x += freqBinWidth*2.5 ;

@@ -37,7 +37,7 @@ var timePlot   	  = document.getElementById('timeDomainPlot'),
 
 // analyser settings
 analyser.fftSize = freqBinNumber;
-analyser.smoothingTimeConstant = .6;
+analyser.smoothingTimeConstant = .8;
 // analyser.connect(context.destination)
 
 function connectStream(stream)
@@ -129,15 +129,15 @@ function drawCanvas() {
 timectx.fillStyle = 'rgb(0, 0, 0)';
 	timeCanvas.attr("width",freqCanvasDim.width)
 
-	var barWidth = (freqCanvasDim.width / freqBinNumber) * 2.5;
+	var barWidth = (freqCanvasDim.width / freqBinNumber) //* 2.5;
 	var barHeight;
 	var x = 0;
 
-	for(var i = 0; i < freqBinNumber; i++) {
+	for(var i = 0; i < freqBinNumber/6; i++) {
 	    barHeight = hFreqScale(freqBuffer[i])
 	    freqctx.fillStyle = 'rgba(0,188,212,'+barHeight/freqCanvasDim.height+')';
-	    freqctx.fillRect(x,freqCanvasDim.height-barHeight,freqBinWidth*2.5+1,barHeight);
-	    x += freqBinWidth*2.5 ;
+	    freqctx.fillRect(x,freqCanvasDim.height-barHeight,freqBinWidth*6,barHeight);
+	    x += freqBinWidth*6 ;
 	  }
 
 	  x = 0;

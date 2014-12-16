@@ -23,7 +23,7 @@ catch(e) {
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
 	freqPlot      = document.getElementById('freqDomainPlot'),
-	freqBinNumber = Math.pow(2,11),
+	freqBinNumber = Math.pow(2,10),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	freqBuffer    = new Float32Array(freqBinNumber),
@@ -136,7 +136,7 @@ timectx.fillStyle = 'rgb(0, 0, 0)';
 	for(var i = 0; i < freqBinNumber/6; i++) {
 	    barHeight = hFreqScale(freqBuffer[i])
 	    freqctx.fillStyle = 'rgba(0,188,212,'+barHeight/freqCanvasDim.height+')';
-	    freqctx.fillRect(x,freqCanvasDim.height-barHeight,freqBinWidth*6,barHeight);
+	    freqctx.fillRect(x,freqCanvasDim.height-barHeight,freqBinWidth*6.1,barHeight);
 	    x += freqBinWidth*6 ;
 	  }
 
@@ -145,7 +145,7 @@ timectx.fillStyle = 'rgb(0, 0, 0)';
 	for(var i = 0; i < freqBinNumber; i++) {
 	    barHeight = timeBuffer[i]+timeCanvasDim.height/3
 	    
-	    timectx.fillRect(x,timeCanvasDim.height-barHeight,timeBinWidth*2.5+1,barHeight);
+	    timectx.fillRect(x,timeCanvasDim.height-barHeight,timeBinWidth*2.5,barHeight);
 	    x += freqBinWidth*2.5 ;
 	  }
 	};

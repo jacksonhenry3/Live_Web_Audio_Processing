@@ -23,7 +23,7 @@ catch(e) {
 
 var timePlot   	  = document.getElementById('timeDomainPlot'),
 	freqPlot      = document.getElementById('freqDomainPlot'),
-	freqBinNumber = Math.pow(2,10),
+	freqBinNumber = Math.pow(2,11),
 	analyser      = context.createAnalyser(),
 	oscillator    = context.createOscillator(),
 	freqBuffer    = new Float32Array(freqBinNumber),
@@ -70,6 +70,8 @@ function getScales () {
 	colorScale = d3.scale.linear()
 			.range([1,0])
 			.domain([-30,-100])
+
+			
 }
 
 function canvasResize(canvas,dims){
@@ -163,8 +165,8 @@ function analyze()
 
 var audio = new Audio();
 var audio1 = new Audio();
-audio.src = "a.mp3";
-audio1.src = 'b.mp3';
+audio.src = "http://www.hymnswithoutwords.com/hymns/File:Joshua_fought_the_battle_of_Jericho.mp3";
+audio1.src = 'http://archive.org/download/PaulWhitemanHisOrchestraDooWackaDoo/PaulWhitemanHisOrchestra-DooWackaDoo.mp3';
 audio.controls = true;
 audio.playbackRate = 1
 audio.autoplay = false;

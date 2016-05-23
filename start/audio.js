@@ -90,7 +90,7 @@ function analyze()
 function connectStream(stream)
 {
 	var source = context.createMediaStreamSource(stream);
-	source.connect(filter);
+//	source.connect(filter);
 	analyze();
 }
 	filter.connect(gainNode); 
@@ -170,7 +170,7 @@ filter.frequency.value  =filterFreq.immediateValue
 var audio = new Audio();
 var audio1 = new Audio();
 audio.src = 'http://www.amclassical.com/mp3/amclassical_piano_sonata_k_310_mvt_1.mp3';
-audio1.src = 'CalculusStudent.mp3';
+audio1.src = 'test.wav';
 audio.controls = true;
 audio.autoplay = false;
 audio1.controls = true;

@@ -51,6 +51,8 @@ var colorScale = d3.scale.linear()
 	.range([1,0])
 	.domain([-30,-100])
 
+
+
 freqSVG = d3.select("#freqDomainPlot").append("svg:svg")
 	.attr("width",freqVCanvasDim.width)
 	.attr("height",  freqVCanvasDim.height);
@@ -74,28 +76,33 @@ var	freqBinWidth     = (freqVCanvasDim.width*2+1)/freqBinNumber;
 
 // filter settings
 	filter.type = 1; // Low-pass filter. See BiquadFilterNode docs
-	filter.frequency.value = 500; // Set cutoff to 440 HZ
+	filter.frequency.value = 500000; // Set cutoff to 440 HZ
 
 // create oscillator audio graph
 	oscillator.connect(filter);
 
 function analyze() 
 {
-	requestAnimationFrame(analyze);
 	analyser.getFloatFrequencyData(window.frequencyBuffer);
 	analyser.getByteTimeDomainData(window.timeDomainBuffer);
 	showData()
+	requestAnimationFrame(analyze);
 }
 
 function connectStream(stream)
 {
 	var source = context.createMediaStreamSource(stream);
+<<<<<<< HEAD
 //	source.connect(filter);
+=======
+	// source.connect(filter);
+>>>>>>> origin/gh-pages
 	analyze();
 }
+analyze();
 	filter.connect(gainNode); 
 	gainNode.connect(analyser);
-	analyser.connect(context.destination);
+	// analyser.connect(context.destination);
 
 function microphoneError(e) {
 	alert('MicrophoneError error!', e);
@@ -104,7 +111,7 @@ function microphoneError(e) {
 d3.select("#freqDomainPlot").on("mousemove", function()
 {
 	var m = d3.mouse(this)
-		oscillator.frequency.value = m[0]/freqVCanvasDim.width*22050;
+		oscillator.frequency.value = m[0]/freqVCanvasDim.width;
 		gainNode.gain.value = 1-m[1]/freqVCanvasDim.height;	
 		gainNode.gain.value = 1
 });
@@ -169,8 +176,13 @@ filter.frequency.value  =filterFreq.immediateValue
 // Create an <audio> element dynamically.
 var audio = new Audio();
 var audio1 = new Audio();
+<<<<<<< HEAD
 audio.src = 'http://www.amclassical.com/mp3/amclassical_piano_sonata_k_310_mvt_1.mp3';
 audio1.src = 'test.wav';
+=======
+audio.src = "http://www.podtrac.com/pts/redirect.mp3/audio.wnyc.org/radiolab_podcast/radiolab_podcast14outsidewestgate.mp3";
+audio1.src = 'http://www.forelise.com/media/fur_elise_valentina_lisitsa.mp3';
+>>>>>>> origin/gh-pages
 audio.controls = true;
 audio.autoplay = false;
 audio1.controls = true;

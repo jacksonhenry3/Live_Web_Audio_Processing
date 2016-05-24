@@ -1,4 +1,1 @@
-Live_Web_Audio_Processing
-=========================
-
-processing and displaying audio information live in the browser
+This project is about trying to communiate to people what sound really is and how it works. It allows for people to explore the components of sound by having the computer listen to sounds they make and displaying the component frequencies and wave form. It also allows for the vizualization of songs and pure tones. These allow people to see the wave nature of sound. I have also inluded live filters to help people understand filters and frequencies.
